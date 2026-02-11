@@ -1,0 +1,122 @@
+body { background-color: #1a1a1a; color: #eee; font-family: 'Arial', sans-serif; display: flex; flex-direction: column; align-items: center; margin: 0; padding-top: 20px; }
+h1 { color: #ffcc00; text-shadow: 3px 3px #cc3300; margin-bottom: 15px; font-size: 2.5em; }
+#game-container { position: relative; border: 3px solid #666; box-shadow: 0 0 18px rgba(0, 0, 0, 0.8); width: 1280px; height: 720px; overflow: hidden; }
+canvas { display: block; }
+#ui { position: absolute; top: 15px; left: 15px; color: #fff; background-color: rgba(0, 0, 0, 0.65); padding: 10px 15px; border-radius: 8px; font-size: 20px; text-shadow: 2px 2px #000; z-index: 10; }
+#ui div { margin-bottom: 8px; } #ui div:last-child { margin-bottom: 0; }
+#controls-info { width: 1280px; text-align: center; margin-top: 15px; font-size: 14px; color: #ccc; line-height: 1.5; }
+.popup-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: rgba(0, 0, 0, 0.9); padding: 40px 50px; border-radius: 15px; font-weight: bold; text-align: center; text-shadow: 3px 3px 2px #000; z-index: 100; box-shadow: 0 0 25px rgba(0,0,0, 0.6); }
+.popup-overlay button { display: block; margin: 30px auto 0; padding: 15px 30px; font-size: 20px; cursor: pointer; color: #333; border: none; border-radius: 8px; box-shadow: 3px 3px 6px rgba(0,0,0,0.5); transition: background-color 0.2s ease, transform 0.1s ease; }
+.popup-overlay button:hover { background-color: #fff; } .popup-overlay button:active { transform: translateY(1px); box-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+#game-over { display: none; color: #ff4444; border: 5px solid #dd0000; font-size: 64px; } #game-over small { font-size: 32px; display: block; margin-top: 15px; color: #ffbbbb; } #game-over button { background-color: #ffdd44; box-shadow: 3px 3px #cc5500; }
+#level-complete { display: none; color: #33ff33; border: 5px solid #00dd00; font-size: 54px; } #level-complete button { background-color: #ffdd44; box-shadow: 3px 3px #cc5500; } #level-complete #final-score { color: #ffff55; font-size: 58px; display: block; margin-top: 15px; }
+
+/* Mobile Controls */
+#mobile-controls {
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1280px;
+    padding: 15px;
+    margin-top: 10px;
+    gap: 20px;
+}
+
+@media (max-width: 1024px), (pointer: coarse) {
+    #mobile-controls { display: flex; }
+    #controls-info { font-size: 11px; }
+    #game-container { width: 100%; height: auto; }
+    canvas { max-width: 100%; height: auto; }
+    h1 { font-size: 1.5em; }
+}
+
+#dpad {
+    position: relative;
+    width: 150px;
+    height: 150px;
+}
+
+.dpad-btn {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 22px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.dpad-btn:active, .dpad-btn.active {
+    background: rgba(0, 255, 0, 0.4);
+    border-color: #0f0;
+}
+
+#btn-up { top: 0; left: 50%; transform: translateX(-50%); }
+#btn-down { bottom: 0; left: 50%; transform: translateX(-50%); }
+#btn-left { left: 0; top: 50%; transform: translateY(-50%); }
+#btn-right { right: 0; top: 50%; transform: translateY(-50%); }
+
+#action-btns {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.action-row {
+    display: flex;
+    gap: 10px;
+}
+
+.action-btn {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 13px;
+    font-weight: bold;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    text-shadow: 1px 1px 2px black;
+}
+
+.action-btn.attack {
+    background: rgba(255, 100, 0, 0.4);
+    border: 3px solid rgba(255, 150, 0, 0.7);
+}
+
+.action-btn.attack:active, .action-btn.attack.active {
+    background: rgba(255, 150, 0, 0.7);
+    border-color: #ff0;
+}
+
+.action-btn.special {
+    background: rgba(150, 0, 255, 0.4);
+    border: 3px solid rgba(180, 100, 255, 0.7);
+}
+
+.action-btn.special:active, .action-btn.special.active {
+    background: rgba(180, 100, 255, 0.7);
+    border-color: #f0f;
+}
+
+.action-btn.jump {
+    background: rgba(0, 200, 255, 0.4);
+    border: 3px solid rgba(100, 220, 255, 0.7);
+}
+
+.action-btn.jump:active, .action-btn.jump.active {
+    background: rgba(100, 220, 255, 0.7);
+    border-color: #0ff;
+}

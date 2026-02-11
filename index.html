@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Renegade - ZX Spectrum Clone</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Retro Beat'em Up Demo</h1>
+    <div id="game-container">
+        <canvas id="gameCanvas"></canvas>
+        <div id="ui">
+            <div>Игрок HP: <span id="player-hp">100</span></div>
+            <div>Очки: <span id="score">0</span></div>
+        </div>
+        <div id="controls-info">
+             Управление: Стрелки / WSAD - Движение | Z/N - Удар рукой | X/M - Удар ногой | C - Захват | Space - Прыжок / Бросок (в захвате) | Z/N (в захвате) - Удар коленом | X/M (в прыжке) - Удар ногой в прыжке
+        </div>
+         <div id="game-over" style="display: none;" class="popup-overlay">
+            GAME OVER<br><small>Reason</small>
+            <button onclick="location.reload()">Начать заново</button>
+        </div>
+        <!-- Level Complete message will be added by JS (ID: level-complete) -->
+    </div>
+    <!-- Встроенная утилита tinycolor используется в game.js -->
+    <script src="game.js"></script>
+    
+    <!-- Mobile Controls -->
+    <div id="mobile-controls">
+        <div id="dpad">
+            <div class="dpad-btn" id="btn-up">▲</div>
+            <div class="dpad-btn" id="btn-down">▼</div>
+            <div class="dpad-btn" id="btn-left">◀</div>
+            <div class="dpad-btn" id="btn-right">▶</div>
+        </div>
+        <div id="action-btns">
+            <div class="action-row">
+                <div class="action-btn attack" id="btn-punch">PUNCH</div>
+                <div class="action-btn attack" id="btn-kick">KICK</div>
+            </div>
+            <div class="action-row">
+                <div class="action-btn special" id="btn-grab">GRAB</div>
+                <div class="action-btn jump" id="btn-jump">JUMP</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    // Touch controls for mobile
+    function setupTouchButton(id, keyCode) {
+        const btn = document.getElementById(id);
+        if (!btn) return;
+        
+        const activate = (e) => {
+            e.preventDefault();
+            btn.classList.add('active');
+            keysPressed[keyCode] = true;
+        };
+        
+        const deactivate = (e) => {
+            e.preventDefault();
+            btn.classList.remove('active');
+            delete keysPressed[keyCode];
+        };
+        
+        btn.addEventListener('touchstart', activate, { passive: false });
+        btn.addEventListener('touchend', deactivate, { passive: false });
+        btn.addEventListener('touchcancel', deactivate, { passive: false });
+        
+        btn.addEventListener('mousedown', activate);
+        btn.addEventListener('mouseup', deactivate);
+        btn.addEventListener('mouseleave', deactivate);
+    }
+    
+    // Setup mobile controls
+    setupTouchButton('btn-up', 'ArrowUp');
+    setupTouchButton('btn-down', 'ArrowDown');
+    setupTouchButton('btn-left', 'ArrowLeft');
+    setupTouchButton('btn-right', 'ArrowRight');
+    setupTouchButton('btn-punch', 'KeyZ');
+    setupTouchButton('btn-kick', 'KeyX');
+    setupTouchButton('btn-grab', 'KeyC');
+    setupTouchButton('btn-jump', 'Space');
+    </script>
+</body>
+</html>
